@@ -207,6 +207,7 @@ void hamming_matrix_seq_blocked(
 
     if (N % block_size != 0) {
         std::cerr << "ERROR: number of sequences " << N << " must be divisible by the block size " << block_size << std::endl;
+        std::abort();
     }
 
     const size_t total_vectors = L / vector_size; // rounds down
