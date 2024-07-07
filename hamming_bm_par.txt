@@ -1,0 +1,28 @@
+--------------------------------------------------------------------------
+Benchmark                                Time             CPU   Iterations
+--------------------------------------------------------------------------
+BM_hamming_seq_naive/8                4.50 ns         4.50 ns    152473281
+BM_hamming_seq_naive/64               12.1 ns         12.1 ns     57882459
+BM_hamming_seq_naive/512              95.2 ns         95.1 ns      7369194
+BM_hamming_seq_naive/4096              784 ns          784 ns       920666
+BM_hamming_seq_naive/32768            6218 ns         6214 ns       110595
+BM_hamming_seq_naive/262144          48378 ns        48364 ns        13784
+BM_hamming_seq_naive/2097152        389596 ns       389364 ns         1801
+BM_hamming_seq_naive/16777216      3627329 ns      3622891 ns          196
+BM_hamming_seq_naive/134217728    26981326 ns     26939901 ns           26
+BM_hamming_vectorized/8               1344 ns         1343 ns       489118
+BM_hamming_vectorized/64              1352 ns         1341 ns       526630
+BM_hamming_vectorized/512             1376 ns         1375 ns       495514
+BM_hamming_vectorized/4096            1414 ns         1413 ns       492944
+BM_hamming_vectorized/32768           1524 ns         1523 ns       468113
+BM_hamming_vectorized/262144          2723 ns         2721 ns       260046
+BM_hamming_vectorized/2097152        12406 ns        12336 ns        59609
+BM_hamming_vectorized/16777216       91091 ns        90588 ns         7968
+BM_hamming_vectorized/134217728     729307 ns       720784 ns          929
+
+theoretical max: ???
+on simple 4 core machine, 3.6 GHz
+8<<24 chars / 729307ns = 184 Gchar/s
+
+stani:
+60*60 * 600k / 2 chars / 2.2s = 0.5 Gchar/s
