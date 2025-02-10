@@ -1,3 +1,9 @@
+#include "hamming.h"
+#include <vector>
+#include <fstream>
+#include <iostream>
+#include <string>
+
 std::vector<Base> read_seqdata(const char* path) {
     std::vector<Base> data;
 

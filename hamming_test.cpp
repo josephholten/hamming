@@ -6,12 +6,9 @@
 #include <stdio.h>
 #include <fstream>
 #include <array>
-#include <vcl/vectorclass.h>
 #include <cassert>
 #include <chrono>
 #include <set>
-
-typedef uint8_t Base;
 
 #include "seqdata_io.h"
 #include "hamming.h"
