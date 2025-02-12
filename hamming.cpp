@@ -75,20 +75,20 @@ size_t hamming_seq_vectorized(size_t n, const Base* x, const Base* y) {
 
 size_t hamming_par_vectorized(size_t n, const Base* x, const Base* y) {
     uint64_t dist = 0; // total distance
-    
+
     constexpr size_t vector_size = 32;
     const size_t total_vectors = n / vector_size; // rounds down
-    
+
     constexpr size_t batch_size = 252; // must be less than 255, and divisible by 4
-    const size_t total_batches = total_vectors / batch_size; 
+    const size_t total_batches = total_vectors / batch_size;
 
     const size_t left_over_vectors = total_vectors % batch_size;
     const size_t left_over_single  = n % vector_size;
 
 
-    #pragma omp parallel reduction(+: dist) 
+    #pragma omp parallel reduction(+: dist)
     {
-        #pragma omp for schedule(static) 
+        #pragma omp for schedule(static)
         for (size_t batch = 0; batch < total_batches; batch += 1) {
             size_t offset = batch*batch_size*vector_size;
             dist += hamming_batch(batch_size, x + offset, y + offset);
