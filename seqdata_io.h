@@ -33,10 +33,3 @@ std::vector<Base> random_seqdata(size_t n) {
     return data;
 }
 
-std::vector<std::vector<Base>> random_seqdata(size_t n, size_t m) {
-    std::vector<std::vector<Base>> data;
-    for (size_t i = 0; i < m; i++) {
-        data.push_back(random_seqdata(n));
-    }
-    return data;
-}

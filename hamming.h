@@ -2,12 +2,12 @@
 #define HAMMING_H
 
 #include <functional>
-#include <CL/sycl.hpp>
-#include "vcl/vectorclass.h"
+#include <vcl/vectorclass.h>
 #include <cstdint>
 
 typedef uint8_t Base;
 
+size_t hamming_batch(const size_t batch_size, const Base* x, const Base* y);
 size_t hamming_seq_naive(size_t n, const Base* x, const Base* y);
 size_t hamming_seq_branchless(size_t n, const Base* x, const Base* y);
 size_t hamming_seq_vectorized(size_t n, const Base* x, const Base* y);
@@ -42,3 +42,4 @@ void hamming_matrix_seq_blocked(
 );
 
 #endif /* HAMMING_H */
+

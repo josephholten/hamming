@@ -123,7 +123,7 @@ TEST(hamming_seq_branchless, against_naive) {
         const std::vector<Base> x = random_seqdata(l);
         const std::vector<Base> y = random_seqdata(l);
 
-        EXPECT_EQ(
+        ASSERT_EQ(
             hamming_seq_naive(l, x.data(), y.data()), 
             hamming_seq_branchless(l, x.data(), y.data())
         );
@@ -172,7 +172,7 @@ TEST(hamming_seq_vectorized, hamming_batch) {
         const std::vector<Base> x = random_seqdata(l);
         const std::vector<Base> y = random_seqdata(l);
         
-        EXPECT_EQ(
+        ASSERT_EQ(
             hamming_seq_branchless(l, x.data(), y.data()),
             hamming_batch(batch_size, x.data(), y.data())
         );
@@ -185,7 +185,7 @@ TEST(hamming_seq_vectorized, human2) {
         const std::vector<Base> x = random_seqdata(l);
         const std::vector<Base> y = random_seqdata(l);
 
-        EXPECT_EQ(
+        ASSERT_EQ(
             hamming_seq_branchless(l, x.data(), y.data()),
             hamming_seq_vectorized(l, x.data(), y.data())
         ) << "l == " << l << " (l % 32) == " << l%32;
@@ -206,7 +206,7 @@ TEST(hamming_seq_vectorized, against_branchless) {
         const std::vector<Base> x = random_seqdata(l);
         const std::vector<Base> y = random_seqdata(l);
 
-        EXPECT_EQ(
+        ASSERT_EQ(
             hamming_seq_branchless(l, x.data(), y.data()),
             hamming_seq_vectorized(l, x.data(), y.data())
         );
@@ -227,7 +227,7 @@ TEST(hamming_par_vectorized, against_branchless) {
         const std::vector<Base> x = random_seqdata(l);
         const std::vector<Base> y = random_seqdata(l);
 
-        EXPECT_EQ(
+        ASSERT_EQ(
             hamming_seq_branchless(l, x.data(), y.data()),
             hamming_par_vectorized(l, x.data(), y.data())
         );
@@ -260,7 +260,7 @@ TEST(hamming_matrix_seq_nonblocked, human) {
     hamming_matrix_seq_nonblocked(dist.data(), data.data(), N, L);
 
     for (size_t k = 0; k < N*N; k++)
-        EXPECT_EQ(dist[k], dist_true[k]);
+        ASSERT_EQ(dist[k], dist_true[k]);
 }
 
 TEST(hamming_matrix_pargrid, against_seq_nonblocked) {
@@ -274,7 +274,7 @@ TEST(hamming_matrix_pargrid, against_seq_nonblocked) {
     hamming_matrix_pargrid_nonblocked(dist.data(), seq.data(), N, L);
 
     for (size_t k = 0; k < N*N; k++)
-        EXPECT_EQ(dist[k], dist_true[k]);
+        ASSERT_EQ(dist[k], dist_true[k]);
 }
 
 TEST(hamming_matrix_seq_blocked, against_seq_nonblocked_single_batch) {
@@ -288,7 +288,7 @@ TEST(hamming_matrix_seq_blocked, against_seq_nonblocked_single_batch) {
     hamming_matrix_seq_nonblocked(dist_true.data(), seq.data(), N, L);
 
     for (size_t k = 0; k < N*N; k++)
-        EXPECT_EQ(dist[k], dist_true[k]);
+        ASSERT_EQ(dist[k], dist_true[k]);
 }
 
 TEST(hamming_matrix_seq_blocked, against_seq_nonblocked_multi_batch) {
@@ -302,7 +302,7 @@ TEST(hamming_matrix_seq_blocked, against_seq_nonblocked_multi_batch) {
     hamming_matrix_seq_nonblocked(dist_true.data(), seq.data(), N, L);
 
     for (size_t k = 0; k < N*N; k++)
-        EXPECT_EQ(dist[k], dist_true[k]);
+        ASSERT_EQ(dist[k], dist_true[k]);
 }
 
 TEST(hamming_matrix_seq_blocked, against_seq_nonblocked_random_length) {
@@ -327,6 +327,6 @@ TEST(hamming_matrix_seq_blocked, against_seq_nonblocked_random_length) {
         hamming_matrix_seq_nonblocked(dist_true.data(), seq.data(), N, l);
 
         for (size_t k = 0; k < N*N; k++)
-            EXPECT_EQ(dist[k], dist_true[k]);
+            ASSERT_EQ(dist[k], dist_true[k]);
     }
 }

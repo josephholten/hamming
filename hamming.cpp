@@ -1,4 +1,6 @@
-#include "hamming.h"
+#include <hamming.h>
+#include <cassert>
+#include <iostream>
 
 size_t hamming_seq_naive(size_t n, const Base* x, const Base* y) {
     size_t dist = 0;
