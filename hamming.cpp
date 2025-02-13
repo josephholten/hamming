@@ -203,7 +203,7 @@ void hamming_matrix_seq_blocked(
     // but also want 2*block_size*batch_size*vector_size bytes to fit into cache
     // on my machine this should be around 2*4*128*32 bytes = 32 KiB = L1 cache per core
 
-    constexpr size_t block_size = 4;
+    constexpr size_t block_size = 8;
     constexpr size_t vector_size = 32; // in bytes
     constexpr size_t batch_size = 128;
 

@@ -9,57 +9,44 @@
 #include <vcl/vectorclass.h>
 #include <benchmark/benchmark.h>
 
-#include "seqdata_io.h"
-#include "hamming.h"
+#include <seqdata_io.h>
+#include <hamming.h>
 
 // should be chosen such that it is larger than cache
-size_t N = 1<<(3*10);
-std::vector<Base> x = random_seqdata(N);
-std::vector<Base> y = random_seqdata(N);
+size_t L = 1<<15; // approx 32k
+size_t N = 1<<10;
+std::vector<Base> x = random_seqdata(N*L);
+std::vector<size_t> dist(N*N,0);
 
 void setBasesProcessed(benchmark::State& state) {
   using benchmark::Counter;
   state.counters["bases_per_second"] =
-    Counter(static_cast<double>(state.range(0)), Counter::kIsIterationInvariantRate, Counter::kIs1024);
-  state.counters["bases"] =
-    Counter(static_cast<double>(state.range(0)), Counter::kDefaults, Counter::kIs1024);
+    Counter(static_cast<double>(state.range(0)*state.range(0)*L),
+        Counter::kIsIterationInvariantRate, Counter::kIs1024);
+  state.counters["bytes"] =
+    Counter(static_cast<double>(state.range(0)*L),
+        Counter::kDefaults, Counter::kIs1024);
 }
 
-static void BM_hamming_seq_naive(benchmark::State& state) {
+static void BM_hamming_matrix_seq_nonblocked(benchmark::State& state) {
     for (auto _ : state) {
-      benchmark::DoNotOptimize(hamming_seq_naive(state.range(0), x.data(), y.data()));
+      hamming_matrix_seq_nonblocked(dist.data(),x.data(),state.range(0),L);
     }
     setBasesProcessed(state);
 }
 
-BENCHMARK(BM_hamming_seq_naive)->Range(8, N);
+BENCHMARK(BM_hamming_matrix_seq_nonblocked)->Arg(1<<4)->Arg(1<<8)->Arg(1<<9)->Arg(1<<10);
 
-static void BM_hamming_seq_branchless(benchmark::State& state) {
+static void BM_hamming_matrix_seq_blocked(benchmark::State& state) {
     for (auto _ : state) {
-      benchmark::DoNotOptimize(hamming_seq_branchless(state.range(0), x.data(), y.data()));
+      hamming_matrix_seq_blocked(dist.data(),x.data(),state.range(0),L);
     }
     setBasesProcessed(state);
 }
 
-BENCHMARK(BM_hamming_seq_branchless)->Range(8, N);
+BENCHMARK(BM_hamming_matrix_seq_blocked)->Arg(1<<4)->Arg(1<<8)->Arg(1<<9)->Arg(1<<10);
 
-static void BM_hamming_seq_vectorized(benchmark::State& state) {
-    for (auto _ : state) {
-      benchmark::DoNotOptimize(hamming_seq_vectorized(state.range(0), x.data(), y.data()));
-    }
-    setBasesProcessed(state);
-}
 
-BENCHMARK(BM_hamming_seq_vectorized)->Range(8, N);
-
-static void BM_hamming_par_vectorized(benchmark::State& state) {
-    for (auto _ : state) {
-      benchmark::DoNotOptimize(hamming_par_vectorized(state.range(0), x.data(), y.data()));
-    }
-    setBasesProcessed(state);
-}
-
-BENCHMARK(BM_hamming_par_vectorized)->Range(8, N);
 
 
 
